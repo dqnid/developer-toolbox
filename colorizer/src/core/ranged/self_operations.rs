@@ -5,6 +5,12 @@ use std::{
     ops::{Add, Div, Mul, Sub},
 };
 
+impl<const LOW: BaseNumber, const HIGH: BaseNumber> Into<f32> for RangedInt<{ LOW }, { HIGH }> {
+    fn into(self) -> f32 {
+        self.0 as f32
+    }
+}
+
 impl<const LOW: BaseNumber, const HIGH: BaseNumber> PartialEq for RangedInt<{ LOW }, { HIGH }> {
     fn eq(&self, other: &Self) -> bool {
         self.0 == other.0

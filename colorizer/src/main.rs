@@ -2,11 +2,10 @@ use clipboard::ClipboardContext;
 use clipboard::ClipboardProvider;
 
 pub mod core;
-mod transmuter;
+mod formats;
+use formats::colors::{Color, RGB};
 
-#[cfg(test)]
-#[path = "./test/transmuter.test.rs"]
-mod test;
+use crate::formats::colors::HSL;
 
 fn example() {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
@@ -17,4 +16,9 @@ fn example() {
 fn main() {
     println!("Hello, world!");
     example();
+
+    let hsl_color = Color::from(HSL::new(193, 67, 28));
+    let rgb_color = Color::from(RGB::from(HSL::new(193, 67, 28)));
+    println!("HSL Color: {}", hsl_color.format());
+    println!("RGB Color: {}", rgb_color.format());
 }
