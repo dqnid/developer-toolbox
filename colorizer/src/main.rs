@@ -1,11 +1,12 @@
 use clipboard::ClipboardContext;
 use clipboard::ClipboardProvider;
 
-pub mod core;
-mod formats;
-use formats::colors::{Color, RGB};
+use crate::color::Color;
+use crate::color::HSL;
+use crate::color::RGB;
 
-use crate::formats::colors::HSL;
+mod color;
+pub mod core;
 
 fn example() {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();

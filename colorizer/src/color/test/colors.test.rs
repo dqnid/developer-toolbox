@@ -1,6 +1,6 @@
 #[cfg(test)]
 pub mod tests {
-    use crate::formats::colors::{Color, HSL, RGB};
+    use crate::color::{Color, HSL, RGB};
 
     #[test]
     fn test_conversion() {
