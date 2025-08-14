@@ -20,38 +20,6 @@ impl PartialEq for HSL {
     }
 }
 
-fn min_of_float_vec(vector: Vec<f32>) -> Option<f32> {
-    let mut min: Option<f32> = None;
-
-    for element in vector.iter() {
-        if let Some(value) = min {
-            if element < &value {
-                min = Some(*element)
-            }
-        } else {
-            min = Some(*element);
-        }
-    }
-
-    min
-}
-
-fn max_of_float_vec(vector: Vec<f32>) -> Option<f32> {
-    let mut max: Option<f32> = None;
-
-    for element in vector.iter() {
-        if let Some(value) = max {
-            if element > &value {
-                max = Some(*element)
-            }
-        } else {
-            max = Some(*element);
-        }
-    }
-
-    max
-}
-
 impl From<RGB> for HSL {
     fn from(value: RGB) -> Self {
         let r = value.0.to_f32() / 255.0;
@@ -78,7 +46,6 @@ impl From<RGB> for HSL {
             }
 
             // Hue set
-            // TODO FIX
             if max == r {
                 let temp = if g < b { 6.0 } else { 0.0 };
                 h = (g - b) / (max - min) + temp;
