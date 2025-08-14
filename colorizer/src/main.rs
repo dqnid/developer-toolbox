@@ -18,8 +18,8 @@ fn main() {
     println!("Hello, world!");
     example();
 
-    let hsl_color = Color::from(HSL::new(193, 67, 28));
-    let rgb_color = Color::from(RGB::from(HSL::new(193, 67, 28)));
+    let hsl_color = Color::from(HSL::new(0, 100, 50));
+    // let rgb_color = Color::from(HSL::new(193, 67, 28));
     println!("HSL Color: {}", hsl_color.format());
-    println!("RGB Color: {}", rgb_color.format());
+    // println!("RGB Color: {}", rgb_color.format());
 }
