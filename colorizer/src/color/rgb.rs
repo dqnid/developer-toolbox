@@ -1,7 +1,7 @@
-use std::fmt::UpperHex;
+use std::fmt::{Display, UpperHex};
 
 use crate::{
-    color::{ColorIntensity, HSL, RGB},
+    color::{ColorIntensity, HSL, HSV, RGB},
     core::ranged::BaseNumber,
 };
 
@@ -22,6 +22,12 @@ impl PartialEq for RGB {
 
     fn ne(&self, other: &Self) -> bool {
         self.0 != other.0 || self.1 != other.1 || self.2 != other.2
+    }
+}
+
+impl Display for RGB {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "rgb({}, {}, {})", self.0, self.1, self.2)
     }
 }
 
@@ -84,5 +90,68 @@ impl From<HSL> for RGB {
             (green * 255.0).round() as u8,
             (blue * 255.0).round() as u8,
         )
+    }
+}
+
+impl From<HSV> for RGB {
+    fn from(color: HSV) -> Self {
+        let h = color.0.to_f32() / 360.0;
+        let s = color.1.to_f32() / 100.0;
+        let v = color.2.to_f32() / 100.0;
+
+        if s == 0.0 {
+            let grey = (v * 255.0) as u8;
+            return Self::new(grey, grey, grey);
+        }
+
+        let i = (h * 6.0) as u8;
+
+        let f = (h * 6.0) - i as f32;
+        let p = v * (1.0 - s);
+        let q = v * (1.0 - s * f);
+        let t = v * (1.0 - s * (1.0 - f));
+        let i = i % 6;
+
+        if i == 0 {
+            return Self::new(
+                (v * 255.0).round() as u8,
+                (t * 255.0).round() as u8,
+                (p * 255.0).round() as u8,
+            );
+        }
+        if i == 1 {
+            return Self::new(
+                (q * 255.0).round() as u8,
+                (v * 255.0).round() as u8,
+                (p * 255.0).round() as u8,
+            );
+        }
+        if i == 2 {
+            return Self::new(
+                (p * 255.0).round() as u8,
+                (v * 255.0).round() as u8,
+                (t * 255.0).round() as u8,
+            );
+        }
+        if i == 3 {
+            return Self::new(
+                (p * 255.0).round() as u8,
+                (q * 255.0).round() as u8,
+                (v * 255.0).round() as u8,
+            );
+        }
+        if i == 4 {
+            return Self::new(
+                (t * 255.0).round() as u8,
+                (p * 255.0).round() as u8,
+                (v * 255.0).round() as u8,
+            );
+        }
+
+        return Self::new(
+            (v * 255.0).round() as u8,
+            (p * 255.0).round() as u8,
+            (q * 255.0).round() as u8,
+        );
     }
 }

@@ -1,8 +1,21 @@
 #[cfg(test)]
 pub mod tests {
-    use std::fmt::format;
+    use crate::color::{Color, HSL, HSV, RGB};
 
-    use crate::color::{Color, HSL, RGB};
+    #[test]
+    fn test_color_initialization() {
+        let red_hsl = Color::from(HSL::new(0, 100, 50));
+        let red_rgb = Color::from(RGB::new(255, 0, 0));
+        assert_eq!(red_hsl, red_rgb);
+
+        let green_hsl = Color::from(HSL::new(120, 100, 50));
+        let green_rgb = Color::from(RGB::new(0, 255, 0));
+        assert_eq!(green_hsl, green_rgb);
+
+        let blue_hsl = Color::from(HSL::new(240, 100, 50));
+        let blue_rgb = Color::from(RGB::new(0, 0, 255));
+        assert_eq!(blue_hsl, blue_rgb);
+    }
 
     #[test]
     fn test_conversion() {
@@ -117,17 +130,36 @@ pub mod tests {
     }
 
     #[test]
-    fn test_color_initialization() {
-        let red_hsl = Color::from(HSL::new(0, 100, 50));
-        let red_rgb = Color::from(RGB::new(255, 0, 0));
-        assert_eq!(red_hsl, red_rgb);
+    fn test_hsv_from_rgb() {
+        // Base colors
+        let color = RGB::new(255, 0, 0);
+        assert_eq!(HSV::from(color), HSV::new(0, 100, 100));
+        let color = RGB::new(0, 255, 0);
+        assert_eq!(HSV::from(color), HSV::new(120, 100, 100));
+        let color = RGB::new(0, 0, 255);
+        assert_eq!(HSV::from(color), HSV::new(240, 100, 100));
 
-        let green_hsl = Color::from(HSL::new(120, 100, 50));
-        let green_rgb = Color::from(RGB::new(0, 255, 0));
-        assert_eq!(green_hsl, green_rgb);
+        // Complex colors
+        let color = RGB::new(20, 240, 100);
+        assert_eq!(HSV::from(color), HSV::new(142, 92, 94));
+        let color = RGB::new(220, 10, 50);
+        assert_eq!(HSV::from(color), HSV::new(349, 95, 86));
+    }
 
-        let blue_hsl = Color::from(HSL::new(240, 100, 50));
-        let blue_rgb = Color::from(RGB::new(0, 0, 255));
-        assert_eq!(blue_hsl, blue_rgb);
+    #[test]
+    fn test_rgb_from_hsv() {
+        // Base colors
+        let color = HSV::new(0, 100, 100);
+        assert_eq!(RGB::from(color), RGB::new(255, 0, 0));
+        let color = HSV::new(120, 100, 100);
+        assert_eq!(RGB::from(color), RGB::new(0, 255, 0));
+        let color = HSV::new(240, 100, 100);
+        assert_eq!(RGB::from(color), RGB::new(0, 0, 255));
+
+        // Complex colors
+        let color = HSV::new(349, 95, 86);
+        assert_eq!(RGB::from(color), RGB::new(219, 11, 49));
+        let color = HSV::new(142, 92, 94);
+        assert_eq!(RGB::from(color), RGB::new(19, 240, 100));
     }
 }

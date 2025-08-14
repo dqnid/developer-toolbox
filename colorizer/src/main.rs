@@ -1,8 +1,7 @@
 use clipboard::ClipboardContext;
 use clipboard::ClipboardProvider;
 
-use crate::color::Color;
-use crate::color::HSL;
+use crate::color::HSV;
 use crate::color::RGB;
 
 mod color;
@@ -18,8 +17,7 @@ fn main() {
     println!("Hello, world!");
     example();
 
-    let hsl_color = Color::from(HSL::new(0, 100, 50));
-    // let rgb_color = Color::from(HSL::new(193, 67, 28));
-    println!("RGB Color: {:X}", hsl_color);
-    // println!("RGB Color: {}", rgb_color.format());
+    let color = RGB::new(220, 10, 50);
+    let hsv_color = HSV::from(RGB::new(220, 10, 50));
+    println!("RGB color: {}, HSV Color: {}", color, hsv_color);
 }

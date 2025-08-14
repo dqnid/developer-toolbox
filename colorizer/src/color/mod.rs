@@ -3,9 +3,10 @@
 mod test;
 
 pub mod hsl;
+pub mod hsv;
 pub mod rgb;
 
-use std::fmt::{UpperHex, write};
+use std::fmt::UpperHex;
 
 use crate::core::ranged::RangedInt;
 
@@ -16,15 +17,12 @@ pub type Percentage = RangedInt<0, 100>;
 pub struct RGB(ColorIntensity, ColorIntensity, ColorIntensity);
 #[derive(Debug)]
 pub struct HSL(ColorHue, Percentage, Percentage);
-// pub struct HSV(ColorHue, Percentage, Percentage);
+#[derive(Debug)]
+pub struct HSV(ColorHue, Percentage, Percentage);
 #[derive(Debug)]
 pub struct Color(RGB);
 
-impl Color {
-    pub fn format(&self) -> String {
-        format!("{:?}", self.0)
-    }
-}
+impl Color {}
 
 impl UpperHex for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -50,6 +48,12 @@ impl From<RGB> for Color {
 
 impl From<HSL> for Color {
     fn from(color: HSL) -> Self {
+        Color(RGB::from(color))
+    }
+}
+
+impl From<HSV> for Color {
+    fn from(color: HSV) -> Self {
         Color(RGB::from(color))
     }
 }
