@@ -1,3 +1,5 @@
+use std::fmt::UpperHex;
+
 use crate::{
     color::{ColorIntensity, HSL, RGB},
     core::ranged::BaseNumber,
@@ -20,6 +22,12 @@ impl PartialEq for RGB {
 
     fn ne(&self, other: &Self) -> bool {
         self.0 != other.0 || self.1 != other.1 || self.2 != other.2
+    }
+}
+
+impl UpperHex for RGB {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:0>2X}{:0>2X}{:0>2X}", self.0, self.1, self.2)
     }
 }
 

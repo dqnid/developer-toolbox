@@ -1,5 +1,7 @@
 #[cfg(test)]
 pub mod tests {
+    use std::fmt::format;
+
     use crate::color::{Color, HSL, RGB};
 
     #[test]
@@ -87,6 +89,31 @@ pub mod tests {
         let purple_hsl = HSL::new(272, 63, 46);
 
         assert_eq!(purple_rgb, RGB::from(purple_hsl));
+    }
+
+    #[test]
+    fn test_basic_hex_convertion() {
+        let red_color = Color::from(RGB::new(255, 0, 0));
+        let green_color = Color::from(RGB::new(0, 255, 0));
+        let blue_color = Color::from(RGB::new(0, 0, 255));
+
+        assert_eq!(format!("{:X}", red_color), "FF0000");
+        assert_eq!(format!("{:X}", green_color), "00FF00");
+        assert_eq!(format!("{:X}", blue_color), "0000FF");
+    }
+
+    #[test]
+    fn test_complex_hex_convertion() {
+        let color = Color::from(RGB::new(255, 183, 3));
+        assert_eq!(format!("{:X}", color), "FFB703");
+        let color = Color::from(RGB::new(88, 129, 87));
+        assert_eq!(format!("{:X}", color), "588157");
+        let color = Color::from(RGB::new(251, 133, 0));
+        assert_eq!(format!("{:X}", color), "FB8500");
+        let color = Color::from(RGB::new(131, 56, 236));
+        assert_eq!(format!("{:X}", color), "8338EC");
+        let color = Color::from(RGB::new(157, 129, 137));
+        assert_eq!(format!("{:X}", color), "9D8189");
     }
 
     #[test]

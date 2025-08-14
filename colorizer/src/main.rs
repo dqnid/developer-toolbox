@@ -20,6 +20,6 @@ fn main() {
 
     let hsl_color = Color::from(HSL::new(0, 100, 50));
     // let rgb_color = Color::from(HSL::new(193, 67, 28));
-    println!("HSL Color: {}", hsl_color.format());
+    println!("RGB Color: {:X}", hsl_color);
     // println!("RGB Color: {}", rgb_color.format());
 }

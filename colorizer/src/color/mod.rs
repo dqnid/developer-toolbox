@@ -5,6 +5,8 @@ mod test;
 pub mod hsl;
 pub mod rgb;
 
+use std::fmt::{UpperHex, write};
+
 use crate::core::ranged::RangedInt;
 
 pub type ColorIntensity = RangedInt<0, 255>;
@@ -21,6 +23,12 @@ pub struct Color(RGB);
 impl Color {
     pub fn format(&self) -> String {
         format!("{:?}", self.0)
+    }
+}
+
+impl UpperHex for Color {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:X}", self.0)
     }
 }
 
