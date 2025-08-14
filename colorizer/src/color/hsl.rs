@@ -10,6 +10,16 @@ impl HSL {
     }
 }
 
+impl PartialEq for HSL {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0 && self.1 == other.1 && self.2 == other.2
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.0 != other.0 || self.1 != other.1 || self.2 != other.2
+    }
+}
+
 fn min_of_float_vec(vector: Vec<f32>) -> Option<f32> {
     let mut min: Option<f32> = None;
 
@@ -48,36 +58,39 @@ impl From<RGB> for HSL {
         let g = value.1.to_f32() / 255.0;
         let b = value.2.to_f32() / 255.0;
 
-        let min: f32 = min_of_float_vec(vec![r, g, b]).unwrap();
-        let max: f32 = max_of_float_vec(vec![r, g, b]).unwrap();
+        let min: f32 = r.min(g.min(b));
+        let max: f32 = r.max(g.max(b));
 
-        // Luminance
-        let l = ((min + max) / 2.0).round();
+        let h;
+        let s;
+        // Luminance set
+        let l = (min + max) / 2.0;
 
-        // Saturation
-        let s: f32;
-        if r == g && g == b {
+        if max == min {
             s = 0.0;
+            h = 0.0;
         } else {
+            // Saturation set
             if l <= 0.5 {
                 s = (max - min) / (max + min);
             } else {
                 s = (max - min) / (2.0 - max - min);
             }
-        }
 
-        // Hue
-        let h: f32;
-        if max == r {
-            h = (g - b) / (max - min);
-        } else if max == g {
-            h = 2.0 + (b - r) / (max - min);
-        } else {
-            h = 4.0 + (r - g) / (max - min);
+            // Hue set
+            // TODO FIX
+            if max == r {
+                let temp = if g < b { 6.0 } else { 0.0 };
+                h = (g - b) / (max - min) + temp;
+            } else if max == g {
+                h = (b - r) / (max - min) + 2.0;
+            } else {
+                h = (r - g) / (max - min) + 4.0;
+            }
         }
 
         HSL::new(
-            (h * 60.0).round() as u16,
+            (h / 6.0 * 360.0).round() as u16,
             (s * 100.0).round() as u8,
             (l * 100.0).round() as u8,
         )

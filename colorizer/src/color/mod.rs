@@ -12,6 +12,7 @@ pub type ColorHue = RangedInt<0, 360>;
 pub type Percentage = RangedInt<0, 100>;
 #[derive(Debug)]
 pub struct RGB(ColorIntensity, ColorIntensity, ColorIntensity);
+#[derive(Debug)]
 pub struct HSL(ColorHue, Percentage, Percentage);
 // pub struct HSV(ColorHue, Percentage, Percentage);
 #[derive(Debug)]
