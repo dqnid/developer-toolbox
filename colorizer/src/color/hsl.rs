@@ -1,4 +1,5 @@
 use crate::color::{ColorHue, HSL, Percentage, RGB};
+use regex::Regex;
 
 impl HSL {
     pub fn new(h: u16, s: u8, l: u8) -> Self {
@@ -17,6 +18,28 @@ impl PartialEq for HSL {
 
     fn ne(&self, other: &Self) -> bool {
         self.0 != other.0 || self.1 != other.1 || self.2 != other.2
+    }
+}
+
+// TODO: manage error
+impl From<String> for HSL {
+    fn from(value: String) -> Self {
+        let regex = Regex::new(r"hsl\(([0-9]+),([0-9]+),([0-9 ]+)\)").unwrap();
+        let numbers = value.replace(" ", "").replace("%", "");
+        let result = regex.captures(&numbers);
+
+        match result {
+            Some(value_list) => {
+                // Numeric
+                let h: u16 = value_list[1].parse::<u16>().unwrap();
+                let s: u8 = value_list[2].parse::<u8>().unwrap();
+                let l: u8 = value_list[3].parse::<u8>().unwrap();
+                return Self::new(h, s, l);
+            }
+            None => (),
+        }
+
+        Self::new(0, 0, 0)
     }
 }
 

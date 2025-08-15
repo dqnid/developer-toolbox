@@ -162,4 +162,93 @@ pub mod tests {
         let color = HSV::new(142, 92, 94);
         assert_eq!(RGB::from(color), RGB::new(19, 240, 100));
     }
+
+    #[test]
+    fn test_rgb_string_parse() {
+        // Base colors
+        // HEX
+        let color = "#FF0000";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(255, 0, 0));
+        let color = "#00FF00";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(0, 255, 0));
+        let color = "#0000FF";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(0, 0, 255));
+        // RGB
+        let color = "rgb(255 ,0,0)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(255, 0, 0));
+        let color = "rgb(0,255, 0)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(0, 255, 0));
+        let color = "rgb(0 , 0, 255)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(0, 0, 255));
+
+        // Complex colors
+        // HEX
+        let color = "#Ffb703";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(255, 183, 3));
+        let color = "#588157";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(88, 129, 87));
+        let color = "#fB8500";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(251, 133, 0));
+        let color = "#8338eC";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(131, 56, 236));
+        let color = "#9D8189";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(157, 129, 137));
+        // RGB
+        let color = "rgb(255, 183, 3)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(255, 183, 3));
+        let color = "rgb(88, 129, 87)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(88, 129, 87));
+        let color = "rgb(251, 133, 0)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(251, 133, 0));
+        let color = "rgb(131, 56, 236)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(131, 56, 236));
+        let color = "rgb(157, 129, 137)";
+        assert_eq!(RGB::from(color.to_string()), RGB::new(157, 129, 137));
+    }
+
+    #[test]
+    fn test_hsl_string_parse() {
+        // Base colors
+        let color = "hsl(0, 100, 50)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(0, 100, 50));
+        let color = "hsl(120, 100, 50)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(120, 100, 50));
+        let color = "hsl(240, 100, 50)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(240, 100, 50));
+
+        // Complex colors
+        let color = "hsl(255 , 83,  3)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(255, 83, 3));
+        let color = "hsl(88 , 29,87)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(88, 29, 87));
+        let color = "hsl(251,33,0)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(251, 33, 0));
+        let color = "hsl(131,56,36)";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(131, 56, 36));
+        let color = "hsl(157,29, 37 )";
+        assert_eq!(HSL::from(color.to_string()), HSL::new(157, 29, 37));
+    }
+
+    #[test]
+    fn test_hsv_string_parse() {
+        // Base colors
+        let color = "hsv(0, 100, 50)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(0, 100, 50));
+        let color = "hsv(120, 100, 50)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(120, 100, 50));
+        let color = "hsv(240, 100, 50)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(240, 100, 50));
+
+        // Complex colors
+        let color = "hsv(255 , 83,  3)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(255, 83, 3));
+        let color = "hsv(88 , 29,87)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(88, 29, 87));
+        let color = "hsv(251,33,0)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(251, 33, 0));
+        let color = "hsv(131,56,36)";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(131, 56, 36));
+        let color = "hsv(157,29, 37 )";
+        assert_eq!(HSV::from(color.to_string()), HSV::new(157, 29, 37));
+    }
 }

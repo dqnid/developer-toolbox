@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::fmt::Display;
 
 use crate::color::{ColorHue, HSV, Percentage, RGB};
@@ -25,6 +26,28 @@ impl PartialEq for HSV {
 
     fn ne(&self, other: &Self) -> bool {
         self.0 != other.0 || self.1 != other.1 || self.2 != other.2
+    }
+}
+
+// TODO: manage error
+impl From<String> for HSV {
+    fn from(value: String) -> Self {
+        let regex = Regex::new(r"hsv\(([0-9]+),([0-9]+),([0-9 ]+)\)").unwrap();
+        let numbers = value.replace(" ", "").replace("%", "");
+        let result = regex.captures(&numbers);
+
+        match result {
+            Some(value_list) => {
+                // Numeric
+                let h: u16 = value_list[1].parse::<u16>().unwrap();
+                let s: u8 = value_list[2].parse::<u8>().unwrap();
+                let v: u8 = value_list[3].parse::<u8>().unwrap();
+                return Self::new(h, s, v);
+            }
+            None => (),
+        }
+
+        Self::new(0, 0, 0)
     }
 }
 

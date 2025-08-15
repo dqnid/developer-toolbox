@@ -1,3 +1,4 @@
+use regex::Regex;
 use std::fmt::{Display, UpperHex};
 
 use crate::{
@@ -12,6 +13,39 @@ impl RGB {
             ColorIntensity::new(g as BaseNumber),
             ColorIntensity::new(b as BaseNumber),
         )
+    }
+}
+
+// TODO: manage error
+impl From<String> for RGB {
+    fn from(value: String) -> Self {
+        let regex = Regex::new(r"rgb\(([0-9]+),([0-9]+),([0-9 ]+)\)").unwrap();
+        let mut numbers = value.replace(" ", "");
+        let result = regex.captures(&numbers);
+
+        match result {
+            Some(value_list) => {
+                // Numeric
+                let r: u8 = value_list[1].parse::<u8>().unwrap();
+                let g: u8 = value_list[2].parse::<u8>().unwrap();
+                let b: u8 = value_list[3].parse::<u8>().unwrap();
+                return Self::new(r, g, b);
+            }
+            None => {
+                // Hex
+                if numbers.len() == 7 {
+                    numbers.remove(0);
+                    let hex = numbers.split_at(2);
+                    let r = u8::from_str_radix(hex.0, 16).unwrap();
+                    let hex = hex.1.split_at(2);
+                    let g = u8::from_str_radix(hex.0, 16).unwrap();
+                    let b = u8::from_str_radix(hex.1, 16).unwrap();
+                    return Self::new(r, g, b);
+                }
+            }
+        }
+
+        Self::new(0, 0, 0)
     }
 }
 
