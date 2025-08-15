@@ -251,4 +251,27 @@ pub mod tests {
         let color = "hsv(157,29, 37 )";
         assert_eq!(HSV::from(color.to_string()), HSV::new(157, 29, 37));
     }
+
+    #[test]
+    fn test_color_string_parse() {
+        let input = "test1hsv(255 , 83,  3)test2";
+        let result = Color::try_parse(input.to_string());
+        assert_eq!(result, Ok(Color::from(HSV::from(input.to_string()))));
+
+        let input = "test1hsj(255 , 83,  3)test2";
+        let result = Color::try_parse(input.to_string());
+        assert_eq!(result, Err(()));
+
+        let input = "test1hsl(25a , 83,  3)test2";
+        let result = Color::try_parse(input.to_string());
+        assert_eq!(result, Err(()));
+
+        let input = "#afj";
+        let result = Color::try_parse(input.to_string());
+        assert_eq!(result, Err(()));
+
+        let input = "p#test2#010203j";
+        let result = Color::try_parse(input.to_string());
+        assert_eq!(result, Ok(Color::from(RGB::new(1, 2, 3))));
+    }
 }

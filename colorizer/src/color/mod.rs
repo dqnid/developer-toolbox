@@ -26,16 +26,18 @@ pub struct Color(RGB);
 
 impl Color {
     pub fn try_parse(input: String) -> Result<Color, ()> {
-        let input = input.replace(" ", "").to_uppercase();
+        let input = input.replace(" ", "").to_lowercase();
 
+        // TODO: clean all of this
+        // - Move down to custom trait that returns a Result
         let hex_regex = Regex::new(r".*(#[a-fA-F0-9]{3,6}).*").unwrap();
         let rgb_regex =
-            Regex::new(r"(rgb\([ ]*[0-9]+[ ]*,[ ]*[0-9]+[ ]*,[ ]*[0-9 ]+[ ]*\)).*").unwrap();
+            Regex::new(r".*(rgb\([ ]*[0-9]+[ ]*,[ ]*[0-9]+[ ]*,[ ]*[0-9 ]+[ ]*\)).*").unwrap();
         let hsl_regex =
-            Regex::new(r"(hsl\([ ]*[0-9]+[ ]*,[0-9]+[ ]*[%]*[ ]*,[0-9 ]+[ ]*[%]*[ ]*\)).*")
+            Regex::new(r".*(hsl\([ ]*[0-9]+[ ]*,[0-9]+[ ]*[%]*[ ]*,[0-9 ]+[ ]*[%]*[ ]*\)).*")
                 .unwrap();
         let hsv_regex =
-            Regex::new(r"(hsv\([ ]*[0-9]+[ ]*,[0-9]+[ ]*[%]*[ ]*,[0-9 ]+[ ]*[%]*[ ]*\)).*")
+            Regex::new(r".*(hsv\([ ]*[0-9]+[ ]*,[0-9]+[ ]*[%]*[ ]*,[0-9 ]+[ ]*[%]*[ ]*\)).*")
                 .unwrap();
 
         let hex_result = hex_regex.captures(&input);
