@@ -17,11 +17,13 @@ fn set_clipboard(output: String) {
     let result = ctx.set_text(output.clone());
     match result {
         Ok(_) => {
-            println!(
+            Text::new(&format!(
                 "{} Copied {} to clipboard!",
                 "✔ ".truecolor(0, 240, 0),
                 output
-            );
+            ))
+            .prompt()
+            .unwrap();
         }
         Err(_) => {
             println!("{} Error on copy to clipboard!", "✔ ".truecolor(240, 0, 0),);
@@ -29,14 +31,14 @@ fn set_clipboard(output: String) {
     }
 }
 
-// fn read_clipboard() -> Result<String, ()> {
-// let ctx: ClipboardContext = ClipboardContext::new().unwrap();
-// let value = ctx.get_rich_text();
-// match value {
-//     Ok(clipboard) => return Ok(clipboard),
-//     Err(_) => return Err(()),
-// }
-// }
+fn read_clipboard() -> Result<String, ()> {
+    let mut ctx = Clipboard::new().unwrap();
+    let value = ctx.get_text();
+    match value {
+        Ok(clipboard) => return Ok(clipboard),
+        Err(_) => return Err(()),
+    }
+}
 
 /**
  * Params
@@ -46,7 +48,27 @@ fn set_clipboard(output: String) {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let parsed_color = Color::try_parse("#F2FA01".to_string());
+    let mut input: String = String::new();
+    if args.len() == 2 && (args[1] == "--clipboard" || args[1] == "-c") {
+        let clipboard_result = read_clipboard();
+        match clipboard_result {
+            Ok(data) => input = data,
+            Err(()) => {} // Manage error
+        }
+    } else if args.len() == 3 && (args[1] == "--input" || args[1] == "-i") {
+        input = args[2].clone();
+    } else {
+        let input_result = Text::new(
+            "Input color [#<hex>, rgb(<r>,<g>,<b>), hsl(<h>, <s>, <l>), hsv(<h>,<s>,<v>)]",
+        )
+        .prompt();
+        match input_result {
+            Ok(data) => input = data,
+            Err(_) => {} // Manage error
+        }
+    }
+
+    let parsed_color = Color::try_parse(input);
     match parsed_color {
         Ok(color) => {
             let options = list_color_options(color.clone());
