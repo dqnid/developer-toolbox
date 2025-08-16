@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::color::{ColorHue, HSL, Percentage, RGB};
 use regex::Regex;
 
@@ -8,6 +10,12 @@ impl HSL {
             Percentage::new(s as i16),
             Percentage::new(l as i16),
         )
+    }
+}
+
+impl Display for HSL {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "hsl({}, {}%, {}%)", self.0, self.1, self.2)
     }
 }
 

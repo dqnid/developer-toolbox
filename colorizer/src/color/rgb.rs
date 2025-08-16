@@ -14,6 +14,14 @@ impl RGB {
             ColorIntensity::new(b as BaseNumber),
         )
     }
+
+    pub fn to_u8_tuple(self) -> (u8, u8, u8) {
+        (
+            self.0.to_f32() as u8,
+            self.1.to_f32() as u8,
+            self.2.to_f32() as u8,
+        )
+    }
 }
 
 // TODO: manage error
@@ -67,7 +75,7 @@ impl Display for RGB {
 
 impl UpperHex for RGB {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:0>2X}{:0>2X}{:0>2X}", self.0, self.1, self.2)
+        write!(f, "#{:0>2X}{:0>2X}{:0>2X}", self.0, self.1, self.2)
     }
 }
 

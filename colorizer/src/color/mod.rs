@@ -15,20 +15,20 @@ use crate::core::ranged::RangedInt;
 pub type ColorIntensity = RangedInt<0, 255>;
 pub type ColorHue = RangedInt<0, 360>;
 pub type Percentage = RangedInt<0, 100>;
-#[derive(Debug)]
-pub struct RGB(ColorIntensity, ColorIntensity, ColorIntensity);
-#[derive(Debug)]
+#[derive(Debug, Clone)]
+pub struct RGB(pub ColorIntensity, pub ColorIntensity, pub ColorIntensity);
+#[derive(Debug, Clone)]
 pub struct HSL(ColorHue, Percentage, Percentage);
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct HSV(ColorHue, Percentage, Percentage);
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Color(RGB);
 
 impl Color {
     pub fn try_parse(input: String) -> Result<Color, ()> {
         let input = input.replace(" ", "").to_lowercase();
 
-        // TODO: clean all of this
+        // TODO: clean all of this to manage errors on a clean and simple way
         // - Move down to custom trait that returns a Result
         let hex_regex = Regex::new(r".*(#[a-fA-F0-9]{3,6}).*").unwrap();
         let rgb_regex =
@@ -99,5 +99,23 @@ impl From<HSL> for Color {
 impl From<HSV> for Color {
     fn from(color: HSV) -> Self {
         Color(RGB::from(color))
+    }
+}
+
+impl Into<RGB> for Color {
+    fn into(self) -> RGB {
+        self.0
+    }
+}
+
+impl Into<HSL> for Color {
+    fn into(self) -> HSL {
+        HSL::from(self.0)
+    }
+}
+
+impl Into<HSV> for Color {
+    fn into(self) -> HSV {
+        HSV::from(self.0)
     }
 }
